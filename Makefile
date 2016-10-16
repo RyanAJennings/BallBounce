@@ -1,3 +1,4 @@
+
 OBJS = GUI.java BallSimulation.java Simulator.java Vector.java
 
 default:
