@@ -8,7 +8,7 @@ public class Obstacle{
   private Vector[][] normals;
   private edge[] edges;
   
-  public static void obstacle(String file){
+  public static void obstacle(String file) throws FileNotFoundException{
     ...
     draw();
   }
