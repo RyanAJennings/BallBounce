@@ -1,6 +1,8 @@
 /// DID NOT COMMENT THIS CODE. BEWARE!
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 
 import java.awt.event.KeyEvent;
@@ -14,11 +16,6 @@ import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class GUI implements KeyListener {
 
@@ -26,8 +23,6 @@ public class GUI implements KeyListener {
   private static int width = 600;
   private static int height = 600;
   private static double xmin = -55, xmax = 55, ymin = -55, ymax = 55;
-  private static double mass = 0;
-  private static double gravity = 0.98;
 
   //singleton for callbacks
   public static GUI jma = new GUI();
@@ -39,20 +34,9 @@ public class GUI implements KeyListener {
   // the frame for drawing to the screen
   private static JFrame frame;
 
- // Add buttons to change time step, gravity, mass
-  public static JButton timeButton = new JButton("Change Time: ");
-  public static JButton gravityButton = new JButton("Change Gravity: ");
-  public static JButton massButton = new JButton("Change Mass : ");
-
-  // Add JTextField to input time step, gravity, mass
-  public static JTextField timeChange = new JTextField("0");
-  public static JTextField gravityChange = new JTextField("0");
-  public static JTextField massChange = new JTextField("0");
-
   private static long nextDraw = -1;
 
-  //simulated agent
-  private static int dx = 0, dy = 0;
+  private static final Font DEFAULT_FONT = new Font("Monospaced", Font.BOLD, 12);
 
   private GUI() {
   }
@@ -80,31 +64,17 @@ public class GUI implements KeyListener {
     frame.setTitle("Java Motion Applet");
     //frame.setJMenuBar(createMenuBar());
     frame.pack();
-
-    timeButton.setBounds(10,20,150,30);
-    timeChange.setBounds(15,60, 140, 30);
-    gravityButton.setBounds(190,20,150,30);
-    gravityChange.setBounds(195,60,140,30);
-    massButton.setBounds(370,20,150,30);
-    massChange.setBounds(375,60,140,30);
-    frame.add(timeButton);
-    frame.add(gravityButton);
-    frame.add(massButton);
-    frame.add(gravityChange);
-    frame.add(massChange);
-    frame.add(timeChange);
     frame.requestFocusInWindow();
     frame.setVisible(true);
-
   }
 
   public static void clear() {
     offscreen.setColor(Color.black);
     offscreen.fillRect(0, 0, width, height);
-    offscreen.setColor(Color.red);
-    drawCircle(0, 0, 2);
+    //offscreen.setColor(Color.red);
+    //drawCircle(0, 0, 2);
     offscreen.setColor(Color.white);
-    offscreen.draw(new Rectangle2D.Double(scaleX(-50), scaleY(50), factorX(100), factorY(100)));
+    offscreen.draw(new Rectangle2D.Double(scaleX(-52), scaleY(52), factorX(104), factorY(104)));
   }
 
   public static void pause(int t) {
@@ -127,10 +97,6 @@ public class GUI implements KeyListener {
   public static void show() {
     onscreen.drawImage(offscreenImage, 0, 0, null);
     frame.repaint();
-  }
-
-  public static void draw() {
-    show();
     pause(16);
   }
 
@@ -140,29 +106,13 @@ public class GUI implements KeyListener {
 
   public void keyPressed(KeyEvent e) {
     switch(e.getKeyCode()) {
-      case 'A':
-      case 'a': dx = -1; break;
-      case 'D':
-      case 'd': dx = 1; break;
-      case 'W':
-      case 'w': dy = -1; break;
-      case 'S':
-      case 's': dy = 1; break;
-      default: dx = 0; dy = 0; break;
+      default: break;
     }
   }
 
   public void keyReleased(KeyEvent e) {
     switch(e.getKeyCode()) {
-      case 'A':
-      case 'a': dx = 0; break;
-      case 'D':
-      case 'd': dx = 0; break;
-      case 'W':
-      case 'w': dy = 0; break;
-      case 'S':
-      case 's': dy = 0; break;
-      default: dx = 0; dy = 0; break;
+      default: break;
     }
   }
 
@@ -178,4 +128,22 @@ public class GUI implements KeyListener {
     offscreen.fill(new Ellipse2D.Double(
           scaleX(x) - rx/2, scaleY(y) - ry/2, rx, ry));
   }
+
+
+  /// @brief Write text in the current font, left-aligned at (x, y).
+  /// @param  x the x-coordinate of the text
+  /// @param  y the y-coordinate of the text
+  /// @param  text the text
+  public static void text(double x, double y, String text) {
+    if (text == null)
+      throw new NullPointerException();
+
+    offscreen.setFont(DEFAULT_FONT);
+    FontMetrics metrics = offscreen.getFontMetrics();
+    double xs = scaleX(x);
+    double ys = scaleY(y);
+    int hs = metrics.getDescent();
+    offscreen.drawString(text, (float) xs, (float) (ys + hs));
+  }
+
 }
