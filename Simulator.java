@@ -11,6 +11,7 @@ public class Simulator {
   private Ball ball;       /// Ball to simulate
   private Vector gravity;  /// Gravity force
   private Vector wind;     /// Wind force
+  private
 
   private static final int SAMPLES = 100;
 
@@ -26,6 +27,13 @@ public class Simulator {
           System.out.println("Reading timestep");
           timeStep = l.nextDouble();
           break;
+        case "BoundingBox":
+          System.out.println("Reading bbx");
+          double xmin = l.nextDouble();
+          double xmax = l.nextDouble();
+          double ymin = l.nextDouble();
+          double ymax = l.nextDouble();
+          
         case "Gravity":
           System.out.println("Reading gravity");
           gravity = new Vector(l);
@@ -121,34 +129,7 @@ public class Simulator {
 
   /// @brief Collision check linear motion of ball between two positions
   /// @return First collision
-  private Collision checkCollision(Vector p, Vector pnew) {
-    //TODO extend to obstacles and abstract boundary
-    Collision c = new Collision(Double.POSITIVE_INFINITY, null);
-    double f;
-    if(pnew.x() > 50) {
-      f = (50-p.x())/(pnew.x()-p.x());
-      c = new Collision(f, new Vector(-1, 0));
-    }
-    else if(pnew.x() < -50) {
-      f = (-50-p.x())/(pnew.x()-p.x());
-      if(f < c.f())
-        c = new Collision(f, new Vector(1, 0));
-    }
-    if(pnew.y() > 50) {
-      f = (50-p.y())/(pnew.y()-p.y());
-      if(f < c.f())
-        c = new Collision(f, new Vector(0, -1));
-    }
-    else if(pnew.y() < -50) {
-      f = (-50-p.y())/(pnew.y()-p.y());
-      if(f < c.f())
-        c = new Collision(f, new Vector(0, 1));
-    }
-    if(c.f() != Double.POSITIVE_INFINITY)
-      return c;
-    else
-      return null;
-  }
+ 
 
   private void resolveCollision(Collision c) {
     Vector vn = c.n().multiply(c.n().dot(ball.vel()));
@@ -164,6 +145,7 @@ public class Simulator {
 
   private void draw() {
     ball.draw();
+    bbx.draw();
   }
 
   private void drawFrameRate(long updateSum, long drawSum) {
