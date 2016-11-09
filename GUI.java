@@ -115,6 +115,11 @@ public class GUI implements KeyListener {
       default: break;
     }
   }
+  public static void drawRectangle(double xmin, double xmax, double ymin, double ymax){
+    offscreen.setColor(Color.white);
+    offscreen.draw(new Rectangle2D.Double(scaleX(xmin)
+  }
+  
 
   private static double scaleX(double x) { return (width  * (x - xmin) / (xmax - xmin)); }
   private static double scaleY(double y) { return (height * (ymax - y) / (ymax - ymin)); }
