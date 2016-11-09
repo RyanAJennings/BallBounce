@@ -69,7 +69,8 @@ public class Ball {
       l.close();
     }
   }
-
+  /// @return radius of the ball
+  public int radius(){return radius;}
   /// @return Mass of the ball
   public double mass() {return mass;}
   /// @return Drag of the ball
