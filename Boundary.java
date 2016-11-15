@@ -1,3 +1,4 @@
+
 public class Boundary{
   //owned by simulator
   private double xmin, xmax;
@@ -46,4 +47,7 @@ public class Boundary{
   
   
   public static xMax(){return xmax;}
+  public static xMin(){return xMin;}
+  public static yMax(){return yMax;}
+  public static yMin(){return yMin;}
 }
